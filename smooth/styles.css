@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: lightblue;
+}
+
+header .content,
+section .content,
+footer .content {
+  height: 500px;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: darkgray;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+#navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+#navbar a.active {
+  font-weight: bold;
+  color: yellow;
+}
+
+#navbar a.active::before {
+  content: "◯ ";
+}
+
+.section-about {
+  background-color: lightgreen;
+}
+
+.section-service {
+  background-color: lightcoral;
+}
+
+.section-blog {
+  background-color: lightblue;
+}
+
+.section-news {
+  background-color: lightsalmon;
+}
+
+.section-contact {
+  background-color: lightpink;
+}
+
+footer {
+  background-color: black;
+  color: white;
+}

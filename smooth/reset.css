@@ -1,0 +1,87 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Global Styles */
+  header {
+    background-color: lightblue;
+    height: 500px;
+  }
+  
+  header .content,
+  section .content,
+  footer .content {
+    padding: 20px;
+  }
+  
+  header h1 {
+    margin: 0;
+  }
+  
+  #navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: darkgray;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000; /* Ensure the navbar is on top of other elements */
+  }
+  
+  #navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  #navbar a.active {
+    font-weight: bold;
+    color: yellow;
+  }
+  
+  #navbar a.active::before {
+    content: "◯ ";
+  }
+  
+  .section-about {
+    background-color: lightgreen;
+  }
+  
+  .section-service {
+    background-color: lightcoral;
+  }
+  
+  .section-blog {
+    background-color: lightblue;
+  }
+  
+  .section-news {
+    background-color: lightsalmon;
+  }
+  
+  .section-contact {
+    background-color: lightpink;
+  }
+  
+  footer {
+    background-color: black;
+    color: white;
+  }
+  
+  /* Adjustments for smooth scrolling and section visibility */
+  body {
+    scroll-behavior: smooth;
+  }
+  
+  /* Add padding to the top of each section to account for fixed navbar */
+  section {
+    padding-top: 50px; /* Adjust as needed */
+  }
+  
