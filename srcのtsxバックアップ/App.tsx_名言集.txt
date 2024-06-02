@@ -1,0 +1,57 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+interface Quote {
+  content: string;
+  author: string;
+}
+
+function App() {
+  const [quote, setQuote] = useState<Quote>({ content: '', author: '' });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      setIsLoading(true);
+      const response = await fetch('https://api.quotable.io/random');
+      const data = await response.json();
+      setQuote({ content: data.content, author: data.author });
+      setIsLoading(false);
+    }
+    fetchQuote();
+  }, []);
+
+  const getNewQuote = async () => {
+    setIsLoading(true);
+    const response = await fetch('https://api.quotable.io/random');
+    const data = await response.json();
+    setQuote({ content: data.content, author: data.author });
+    setIsLoading(false);
+  }
+
+  return (
+    <div className="App">
+      <header>
+        <h1>ReactとTypeScriptで作成</h1>
+      </header>
+      <main>
+        <h2>ランダム名言集</h2>
+        <p className="mt20">外部のAPIである <a href="https://github.com/lukePeavey/quotable" target="_blink">Quotable API</a> を使用してランダムでエラい人たちの名言（英語）を表示します。</p>
+        {isLoading ?
+          <p>Loading...</p>
+          :
+          <>
+            <p className="content">{quote.content}</p>
+            <p className="author">{quote.author}</p>
+            <button onClick={getNewQuote}>別の名言を表示</button>
+          </>
+        }
+      </main>
+      <footer>
+        <p>React & TypeScript Sample</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;

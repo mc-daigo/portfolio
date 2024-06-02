@@ -1,0 +1,76 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+function App() {
+  const [time, setTime] = useState<number>(0);
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 10);
+      }, 10);
+    } else if (!isRunning && time !== 0) {
+      clearInterval(interval!);
+    }
+    return () => clearInterval(interval!);
+  }, [isRunning]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60000);
+    const seconds = Math.floor((time % 60000) / 1000);
+    const milliseconds = (time % 1000) / 10;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+  }
+
+  const startTimer = () => {
+    if (!isRunning) {
+      setIsRunning(true);
+    }
+  }
+
+  const stopTimer = () => {
+    if (isRunning) {
+      setIsRunning(false);
+    }
+  }
+
+  const resetTimer = () => {
+    setTime(0);
+    setIsRunning(false);
+  }
+
+  return (
+    <div className="App">
+      <header>
+        <h1>ReactとTypeScriptで作成</h1>
+      </header>
+      <main>
+        <h2>タイマー</h2>
+        <p className="mt20">「START」ボタンを押すとカウント開始。<br/>
+        「STOP」ボタンで一時停止、「RESET」ボタンでカウントを0にリセット。</p>
+        <p className="counter">{formatTime(time)}</p>
+        <ul className="buttons">
+        {isRunning ?
+          <>
+            <li><button onClick={stopTimer}>STOP</button></li>
+            <li><button onClick={resetTimer}>RESET</button></li>
+          </>
+          :
+          <>
+          <li><button onClick={startTimer}>START</button></li>
+            {time > 0 && <li><button onClick={resetTimer}>RESET</button></li>}
+          </>
+        }
+        </ul>
+      </main>
+      <footer>
+        <p>React & TypeScript Sample</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
