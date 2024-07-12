@@ -1,0 +1,15 @@
+src/App.tsxを書き換える
+src/App.cssも合わせて書き換えてる
+
+App.tsx_〇〇.txt
+App.css_〇〇.txt
+と名前を変えてるので必要に合わせてtsx、cssに置き換えて機能を変える。
+
+
+npm run build
+を実行し、buildフォルダのindex.htmlの
+href="/
+をすべて
+href="./
+で置き換えて
+buildフォルダをアップする
