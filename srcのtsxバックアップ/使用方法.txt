@@ -8,8 +8,8 @@ App.css_〇〇.txt
 
 npm run build
 を実行し、buildフォルダのindex.htmlの
-href="/
+="/
 をすべて
-href="./
+="./
 で置き換えて
 buildフォルダをアップする
