@@ -1,0 +1,24 @@
+import { useContext } from "react";
+import { TodoContext } from "./providers/TodoProvider";
+
+// Todoのstate全部削除する関数の入ったPropの型
+type Props = {
+  onReset: () => void;
+};
+
+export const Reset = ({ onReset}: Props) => {
+  // contextを使ってグローバルstateを読み込む（AddTodoForm用）
+  const {setInputValue} = useContext(TodoContext)
+  // LocalStorageとStateどちらも消す
+  const strageClear = () => {
+    // Propsで渡されたTodo用のstateの削除
+    onReset()
+    // contextから渡されたAddTodoForm用のstateの削除
+    setInputValue("")
+    // localStorageすべて削除
+    localStorage.clear();
+  };
+  return (
+    <button className="mt30" onClick={strageClear}>LocalStorageとStateのリセット</button>
+  );
+};

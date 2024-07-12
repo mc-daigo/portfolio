@@ -1,0 +1,75 @@
+import React, { useEffect, useContext } from 'react';
+import { TodoContext } from './providers/TodoProvider';
+
+type Props = {
+  onAdd: (inputValue: string) => void; // onAdd関数の型定義
+};
+
+
+export const AddTodoForm = ({ onAdd }: Props) => {
+  // ローカルストレージ用キーの値を"localAddTodo"に固定させる
+  const localAddTodoKey: string = "localAddTodoString";
+  // もともとはここでstateとして宣言していたが、contextとして別ファイルでグローバルstateとしたものを読み込む
+  const {inputValue, setInputValue} = useContext(TodoContext)
+
+  // フォームの値が変更された時に呼ばれる関数
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // フォームの値でグローバルstateを上書き
+    setInputValue(e.target.value);
+    try{
+      // フォーム入力の度にローカルストレージに保存
+      window.localStorage.setItem(localAddTodoKey, e.target.value);
+    }
+    catch(ex){
+      console.error(ex);
+    }
+  };
+
+  // フォームが送信された時に呼ばれる関数
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // フォームのデフォルトの動作をキャンセル
+
+    // inputValueが空でない場合のみonAddを呼び出す
+    if (inputValue.trim() !== '') {
+      onAdd(inputValue); // onAdd関数にinputValueを渡して呼び出し
+      setInputValue(''); // フォームの入力値をリセット
+      try{
+        // ローカルストレージの内容を消す
+        window.localStorage.setItem(localAddTodoKey, "");
+      }
+      catch(ex){
+        console.error(ex);
+      }
+    }
+  };
+
+  // 起動時のみローカルストレージの内容を確認し反映
+  useEffect(() => {
+    try{
+      // キーから取得した値はstringかnull
+      const localValue: string | null = window.localStorage.getItem(localAddTodoKey)
+      // 値を取得していた場合のみ実行
+      if(localValue){
+        console.log("localAddTodoKey： " + localValue);
+        // ステートをローカルの値で更新
+        setInputValue(localValue)
+      }
+    }
+    catch(ex){
+      console.error(ex);
+    }
+  },[])
+
+  // inputValueが空の場合は「作成」ボタンを押せないようにする
+  const isDisabled = inputValue.trim() === '';
+  console.log('AddTodoForm')
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Todoを入力するためのフォーム */}
+      <input type="text" onChange={handleChange} className="inputText" value={inputValue} />
+
+      {/* Todoを追加するためのボタン */}
+      <input type="submit" value="作成" className="submitButton" disabled={isDisabled} />
+    </form>
+  );
+};

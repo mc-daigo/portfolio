@@ -1,0 +1,182 @@
+import { useState, useEffect } from 'react';
+import { Todo } from './components/Todo';
+import { AddTodoForm } from './components/AddTodoForm';
+import { Reset } from './components/Reset';
+import './App.css';
+
+// Todoの型定義
+type TodoType = {
+  id: number;
+  inputValue: string;
+  checked: boolean;
+};
+
+
+const App = () => {
+  // todos: TodoTypeの配列、setTodos: todosを更新するための関数
+  const [todos, setTodos] = useState<TodoType[]>([]);
+
+  // ローカルストレージ用キー
+  const localTodoKey: string = "localTodoData";
+
+  // 新しいTodoを追加する関数
+  const addTodo = (inputValue: string) => {
+console.log("todos.length：" + todos.length );
+    const newTodo: TodoType = {
+      id: todos.length , // 最後のTodoTypeのid
+      inputValue, // フォームに入力された値
+      checked: false, // デフォルトは未完了
+    };
+    setTodos([...todos, newTodo]); // 新しいTodoTypeを配列に追加
+  };
+
+  // TodoTypeを削除する関数
+  const deleteTodo = (id: number) => {
+    const newTodos = todos.filter(todo => todo.id !== id); // 指定されたid以外のTodoTypeを取得
+    // newTodoのidを順番に書き換える
+    newTodos.forEach((newTodo, index) => {
+      newTodo.id = index;
+    })
+    setTodos(newTodos); // 取得したTodoTypeで更新
+  };
+
+  // TodoTypeを編集する関数
+  const editTodo = (id: number, newInputValue: string) => {
+    const newTodos = todos.map(todo => {
+      if (todo.id === id) {
+        // 指定されたidのTodoTypeを新しい値で更新
+        // スプレッド構文では、同名プロパティが存在するオブジェクト内では後に書いた方でプロパティが上書きされる
+        // https://fuqda.hatenablog.com/entry/2022/02/22/140328
+        return { ...todo, inputValue: newInputValue };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(newTodos); // 更新したTodoTypeで配列を更新
+  };
+
+  // TodoTypeをすべて削除する関数
+  const resetTodo = () => {
+    setTodos([]); // Todosを空にする
+  };
+
+  // TodoTypeの完了状態を更新する関数
+  const checkTodo = (id: number, checked: boolean) => {
+    const newTodos = todos.map(todo => {
+      if (todo.id === id) {
+        // 指定されたidのTodoTypeの完了状態を更新
+        return { ...todo, checked };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(newTodos); // 更新したTodoTypeで配列を更新
+  };
+
+
+  // ローカルストレージからステートへ取得する関数
+  const getLocal = () => {
+    try{
+      // キーから取得した値はstringかnull
+      const localValue: string | null = window.localStorage.getItem(localTodoKey)
+      // 値を取得していた場合のみ実行
+      console.log("起動："+ localValue);
+      // 戻り値nullではfalseだが"[]"の文字列だとtrueになってしまう。localStorage.clear();を実行しても値は消えてもなぜかキーは消えないので[]を取得する可能性もあるのでこれらはfalseにする
+      if(localValue !== null && localValue !== "[]"){
+        try {
+          const localTodo: Array<TodoType> = JSON.parse(localValue);
+          console.log("localTodo.length " + localTodo.length);
+          setTodos([...localTodo])
+        } catch(ex2) {
+          // エラー時の処理
+          console.error(ex2); // SyntaxError: Unexpected token h in JSON at position 0
+        }
+      }
+    }
+    catch(ex1){
+      console.error(ex1);
+    }
+  };
+
+  // 起動時のみローカルストレージの内容を確認し反映
+  useEffect(() => {
+    getLocal()
+  },[])
+
+
+  // todosが変更するたびにローカルに保存する（setTodos直後だとtodosに反映されないのでuseEffctを使う）ただしマウント時にも起動してしまう
+  useEffect(() => {
+
+    // ステートのデータをローカルストレージに保存する関数
+    const setLocal = () => {
+      try{
+        // ステートのデータをstringに変換
+        const stateTodoData: string = JSON.stringify(todos);
+        try{
+          // 変換したデータをローカルストレージに保存
+          window.localStorage.setItem(localTodoKey, stateTodoData);
+          console.log("stateTodoData：" + stateTodoData)
+        }
+        catch(ex2){
+          console.error(ex2);
+        }
+      }
+      catch(ex1){
+        console.error(ex1);
+      }
+    };
+    // ステートのデータをローカルストレージに保存する
+    setLocal();
+  },[todos])
+
+  // console.log(App)
+  return (
+
+    <div className="App">
+      <header>
+        <h1>ReactとTypeScriptで作成</h1>
+      </header>
+      <main>
+        <h2>TODOリスト：LocalStorage対応</h2>
+        <p className="mt20">親のテキストボックスに入力した文字列は「作成」ボタンかエンターキーを押すことで子のテキストボックスとして生成される。<br />
+          子のテキストボックスはチェックボックスをクリックしているときのみ「編集」と「削除」ができるようになる。<br />
+          編集中に「保存」を押せば新しく書き換わり、「キャンセル」で元に戻る。</p>
+        <p className="mt20">LocalStorageで編集中の内容はブラウザーに保存されるので再読み込みをしても元の状態が表示される。<br />
+        「LocalStorageとStateのリセット」ボタンを押せば元に戻る。</p>
+        {/* TodoTypeを追加するフォーム */}
+        <AddTodoForm
+          onAdd={addTodo}
+        />
+
+        <ul className="todoList">
+          {/* TodoTypeのリストを表示 */}
+          {todos.map(todo => (
+            <Todo
+              key={todo.id}
+              id={todo.id}
+              inputValue={todo.inputValue}
+              checked={todo.checked}
+              onEdit={editTodo}
+              onChecked={checkTodo}
+              onDelete={deleteTodo}
+            />
+          ))}
+        </ul>
+        {/* ローカルストレージのデータをリセット */}
+        <Reset
+          onReset={resetTodo}
+        />
+      </main>
+      <footer>
+        <p>React & TypeScript Sample</p>
+      </footer>
+    </div>
+
+
+
+
+
+  );
+};
+
+export default App;

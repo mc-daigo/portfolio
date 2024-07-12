@@ -1,0 +1,37 @@
+import { createContext, useState, ReactNode } from "react";
+
+// childrenの型はReactNodeを使う
+type Props = {
+  children: ReactNode
+};
+
+// このように初期値を指定してやればtypescriptでも正しく設定できる。
+// 後者のやり方の様に型を明示的に指定する方がよいのでコメントアウトする
+// export const TodoContext = createContext({
+//   inputValue: '',
+//   setInputValue: (value: string) => {}
+// });
+
+// TypeScript で createContext を使用する場合は、createContext 関数にジェネリックを指定することで、初期値の型を正しく設定することができます
+type TodoContextType = {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+};
+
+export const TodoContext = createContext<TodoContextType>({
+  inputValue: '',
+  setInputValue: () => {}
+});
+//////////////////////////////////////
+
+// contextのProviderでinputValueとsetInputValueをグローバル化してどこからでも使えるようにする
+export const TodoProvider = ({ children }: Props) => {
+  // stateでAddTodoFormの入力データをここに設定する
+  const [inputValue, setInputValue] = useState('');
+  return (
+    // stateをvalueとして渡し、childrenを囲ってやることでstateのデータの共有ができる。
+    <TodoContext.Provider value={{inputValue, setInputValue}}>
+      {children}
+    </TodoContext.Provider>
+  )
+}
