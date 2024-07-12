@@ -1,0 +1,43 @@
+import React, { useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const incrementCount = () => {
+    setCount(count + 1);
+  };
+  const decrementCount = () => {
+    setCount(count - 1);
+  };
+
+  return (
+    <div className="App">
+      <header>
+        <h1>ReactとTypeScriptで作成</h1>
+      </header>
+      <main>
+        <h2>カウンター</h2>
+        <p className="mt20">「Increment」ボタンを押すとカウントが一つ増え、「Decrement」ボタンを押すとカウントが一つ減ります。</p>
+        <p className="counterNum">{count}</p>
+        <ul className="counterButton">
+          <li><button onClick={incrementCount}>Increment</button></li>
+          <li><button onClick={decrementCount}>Decrement</button></li>
+        </ul>
+      </main>
+      <footer>
+        <p>React & TypeScript Sample</p>
+      </footer>
+    </div>
+  );
+
+
+
+}
+
+
+
+
+
+
+export default App;

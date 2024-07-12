@@ -1,0 +1,192 @@
+@charset "UTF-8";
+*{
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font-size:100%;
+  vertical-align:baseline;
+  background:transparent;
+  font-weight: normal;
+  line-height:1;
+  box-sizing: border-box;
+}
+br{
+  line-height: inherit; /* IEで継承されてしまって行間がおかしくなるため */
+}
+body{
+  color:#111;
+  background-color: #999;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+header{
+  background: linear-gradient(135deg, #1F6ED4, #39BAE8);
+  width:100%;
+  height:70px;
+  margin:0 auto 0;
+  /* overflow: hidden; */
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 100;
+}
+main{
+  display:block; /* IE用 */
+  background-color: #fff;
+  width:1000px;
+  min-height: 600px;
+  margin:70px auto 0;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+footer{
+  background: linear-gradient(-135deg, #1F6ED4, #39BAE8);
+  width:1000px;
+  height:30px;
+  margin:0 auto 20px;
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
+}
+h1{
+  color:#fff;
+  width:1000px;
+  height: 70px;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0 auto;
+  padding:20px 0 30px;
+  text-shadow: 1px 1px 1px #333;
+}
+h2{
+  font-weight: bold;
+  font-size: 24px;
+  margin:0 auto 10px;
+  border-left: 8px solid #1F6ED4;
+  height:30px;
+  padding: 5px 0 0 10px;
+}
+p{
+  line-height: 1.6;
+}
+footer p{
+  color:#fff;
+  text-align: center;
+  margin:3px auto 0;
+}
+a, a:active, a:visited{
+  color: #1F6ED4;
+  text-decoration: none;
+}
+a:hover{
+  color: #1F6ED4;
+  text-decoration: underline;
+}
+textarea{
+  vertical-align: top;
+}
+img{
+  vertical-align: bottom;
+}
+
+.mt10{
+  margin-top:10px;
+}
+.mt20{
+  margin-top:20px;
+}
+.mt30{
+  margin-top:30px;
+}
+
+.ml10{
+  margin-left:10px;
+}
+.ml20{
+  margin-left:20px;
+}
+.ml30{
+  margin-left:30px;
+}
+
+.mb10{
+  margin-bottom:10px;
+}
+.mb20{
+  margin-bottom:20px;
+}
+.w400{
+  width: 400px;
+}
+
+input{
+  border: solid 1px #ccc;
+}
+button{
+  border: solid 1px #ccc;
+  padding: 5px;
+  cursor: pointer;
+}
+input[type="checkbox"]{
+  margin:0 5px;
+}
+input[disabled]{
+  background-color: #ddd;
+}
+form{
+  margin: 10px 0;
+}
+.inputText {
+  padding: 10px;
+}
+
+.submitButton {
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.todoList li {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.todoList li input {
+  padding: 7px;
+}
+/* 
+.App {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+
+}
+
+
+
+.inputText {
+  padding: 10px;
+}
+
+.submitButton {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.todoList li {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.todoList li input {
+  padding: 7px;
+}
+ */

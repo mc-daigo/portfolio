@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+
+type Props = {
+  id: number;
+  inputValue: string;
+  checked: boolean;
+  onEdit: (id: number, newInputValue: string) => void;
+  onChecked: (id: number, checked: boolean) => void;
+  onDelete: (id: number) => void;
+};
+
+export const Todo = ({ id, inputValue, checked, onEdit, onChecked, onDelete }: Props) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(inputValue);
+
+  // チェックボックスがクリックされた時に呼ばれる関数
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isEditing) {
+      onChecked(id, e.target.checked);
+    }
+  };
+
+  // 編集ボタンがクリックされた時に呼ばれる関数
+  const handleEdit = () => {
+    if (checked) {
+      setIsEditing(true);
+    }
+  };
+
+  // キャンセルボタンがクリックされた時に呼ばれる関数
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditValue(inputValue);
+  };
+
+  // 保存ボタンがクリックされた時に呼ばれる関数
+  const handleSave = () => {
+    onEdit(id, editValue);
+    setIsEditing(false);
+  };
+
+  // 削除ボタンがクリックされた時に呼ばれる関数
+  const handleDelete = () => {
+    onDelete(id);
+  };
+
+  console.log('todo')
+  return (
+    <li className="todoItem">
+      {/* Todoの完了状態を表すチェックボックス */}
+      <input className="check" type="checkbox" checked={checked} onChange={handleCheck} disabled={isEditing} />
+
+      {/* Todoの入力フォーム */}
+      {isEditing ? (
+        <>
+          <input type="text" className="editInput" value={editValue} onChange={(e) => {console.log("editValue: "+ editValue); setEditValue(e.target.value)}} />
+          <button disabled={editValue === ''} onClick={handleSave}>保存</button>
+          <button onClick={handleCancel}>キャンセル</button>
+        </>
+      ) : (
+        <>
+          <span className={checked ? 'completed' : undefined}>{inputValue}</span>
+          <button disabled={!checked} onClick={handleEdit}>編集</button>
+          <button disabled={!checked} onClick={handleDelete}>削除</button>
+        </>
+      )}
+    </li>
+  );
+};
